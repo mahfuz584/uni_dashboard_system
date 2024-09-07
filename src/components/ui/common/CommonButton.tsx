@@ -12,8 +12,8 @@ const CommonButton: React.FC<TButton> = ({ variant, title }) => {
     switch (variant) {
       case "primary":
         return (
-          <button className="bg-[#112a41]" type="submit">
-            <p>{title}</p>
+          <button className="bg-[#112a41] rounded-md" type="submit">
+            <p className="text-white px-3 py-2">{title}</p>
           </button>
         );
       case "secondary":
