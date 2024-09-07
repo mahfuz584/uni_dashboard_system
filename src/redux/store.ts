@@ -12,6 +12,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import { baseApi } from "./api/baseApi";
 import authSlice from "./features/auth/authSlice";
+import offcanvasSlice from "./features/offcanvas/offcanvasSlice";
 
 //create persistor for storing the state in local storage and rehydrate the state
 
@@ -28,6 +29,7 @@ export const store = configureStore({
     [baseApi.reducerPath]: baseApi.reducer,
     // Add the authSlice reducer to the store
     auth: persistedAuthReducer,
+    offcanvas : offcanvasSlice
   },
   // Add the baseApi middleware to the store for handling API requests
   middleware: (getDefaultMiddleware) =>

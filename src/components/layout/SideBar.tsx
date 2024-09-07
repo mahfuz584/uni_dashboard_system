@@ -36,7 +36,13 @@ const SideBar = ({ collapsed }: { collapsed: boolean }) => {
   }
 
   return (
-    <Sider trigger={null} collapsible collapsed={collapsed}>
+    <Sider
+      collapsedWidth={120}
+      width={250}
+      trigger={null}
+      collapsible
+      collapsed={collapsed}
+    >
       <div
         style={{
           height: "5rem",
@@ -47,7 +53,7 @@ const SideBar = ({ collapsed }: { collapsed: boolean }) => {
           justifyContent: "center",
         }}
       >
-        PH UNI
+        EDU PORTAL
       </div>
       <Menu
         theme="dark"
