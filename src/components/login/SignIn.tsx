@@ -1,5 +1,5 @@
 import { verifyToken } from "@utils/verifyToken";
-import { Col, Form, Input, Row } from "antd";
+import { Button, Col, Form, Input, Row } from "antd";
 import { Controller, FieldValues, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "redux/features/auth/authApi";
@@ -91,7 +91,9 @@ const SignIn = () => {
                 </div>
               )
             )}
-            <Form.Item style={{ marginTop: "24px" }}></Form.Item>
+            <Form.Item style={{ marginTop: "24px" }}>
+              <Button htmlType="submit">Log in</Button>
+            </Form.Item>
           </Col>
         </Row>
       </form>
