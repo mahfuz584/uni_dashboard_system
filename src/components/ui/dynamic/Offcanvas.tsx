@@ -1,29 +1,49 @@
-import { Col, DatePicker, Drawer, Form, Input, Row } from "antd";
+import { Col, DatePicker, Drawer, Form, Input, Row, Select } from "antd";
+import dayjs from "dayjs";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { closeOffcanvas } from "redux/features/offcanvas/offcanvasSlice";
 import { useAppDispatch } from "redux/hooks";
+import { toast } from "sonner";
+import { TOfcanvasProps } from "types/offcanvasTypes";
 import CommonButton from "../common/CommonButton";
-type TformFields = {
-  label: string;
-  type: string;
-  placeholder: string;
-  name: string;
-  rules: {
-    required: string;
-  };
-};
-type TOfcanvasProps = {
-  open: boolean;
-  formFields: TformFields[];
-};
 
-const Offcanvas: React.FC<TOfcanvasProps> = ({ open, formFields }) => {
-  const { control, handleSubmit } = useForm();
+const Offcanvas: React.FC<TOfcanvasProps> = ({
+  open,
+  formFields,
+  onSubmitApi,
+  onSemsterChange,
+}) => {
+  const { control, handleSubmit, setValue } = useForm();
   const dispatch = useAppDispatch();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  ///building the dynamic payload
+  const createDynamicPayload = (data: any) => {
+    const dynamicPayload: any = {};
+
+    formFields.forEach(({ name, type }) => {
+      const fieldValue = data[name];
+      if (type === "year" || type === "month") {
+        dynamicPayload[name] = fieldValue
+          ? dayjs(fieldValue).format(type === "year" ? "YYYY" : "MMMM")
+          : null;
+      } else if (fieldValue) {
+        dynamicPayload[name] = fieldValue;
+        console.log(dynamicPayload[name]);
+      }
+    });
+    return dynamicPayload;
+  };
+
+  const onSubmit = async (data: any) => {
+    const payload = createDynamicPayload(data);
+    try {
+      const response = await onSubmitApi(payload).unwrap();
+      toast.success(`${response?.message}`);
+    } catch (error) {
+      console.log("🚀 ~ onSubmit ~ error:", error);
+      toast.error(`${error?.data?.message}`);
+    }
   };
 
   return (
@@ -37,7 +57,7 @@ const Offcanvas: React.FC<TOfcanvasProps> = ({ open, formFields }) => {
         <Row justify={"center"}>
           <Col xs={23}>
             {formFields.map(
-              ({ label, name, placeholder, type, rules }, idx) => (
+              ({ label, name, placeholder, type, rules, options }, idx) => (
                 <div key={idx} style={{ marginBottom: "16px" }}>
                   <Controller
                     name={name}
@@ -67,6 +87,37 @@ const Offcanvas: React.FC<TOfcanvasProps> = ({ open, formFields }) => {
                             {...field}
                             placeholder={placeholder}
                           />
+                        ) : type === "select" ? (
+                          <Select
+                            {...field}
+                            showSearch
+                            placeholder={placeholder}
+                            filterOption={(input, option) =>
+                              (option?.label ?? "")
+                                .toLowerCase()
+                                .includes(input.toLowerCase())
+                            }
+                            options={options}
+                            onChange={(value) => {
+                              field.onChange(value);
+                              if (onSemsterChange) {
+                                onSemsterChange(value, setValue);
+                              }
+                            }}
+                          />
+                        ) : type === "select" && name === "code" ? (
+                          <Select
+                            disabled
+                            {...field}
+                            showSearch
+                            placeholder={placeholder}
+                            options={options}
+                          />
+                        ) : type === "textArea" ? (
+                          <Input.TextArea
+                            {...field}
+                            placeholder={placeholder}
+                          />
                         ) : null}
                       </Form.Item>
                     )}
@@ -75,7 +126,7 @@ const Offcanvas: React.FC<TOfcanvasProps> = ({ open, formFields }) => {
               )
             )}
             <Form.Item>
-              <CommonButton title="Submit" variant="primary" />
+              <CommonButton type="submit" title="Submit" variant="secondary" />
             </Form.Item>
           </Col>
         </Row>

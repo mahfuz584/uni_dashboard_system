@@ -5,7 +5,7 @@ import { RootState } from "redux/store";
 
 
 const baseQuery = fetchBaseQuery({
-    baseUrl : "http://localhost:5000/api/v1/",
+    baseUrl : "http://localhost:5000/api/v1",
     //for including the cookies in the request.as js cant access the cookies by default.if credentials is set to include then the cookies are included in the request
     credentials : "include",
     //for authorizing the request
@@ -56,6 +56,7 @@ const customBaseQueryWithRefreshToken : BaseQueryFn<FetchArgs,BaseQueryApi,Defin
 export const baseApi = createApi({
     reducerPath : "baseApi",
     baseQuery : customBaseQueryWithRefreshToken,
+    refetchOnMountOrArgChange : true,
     //baseQuery noraml look
     //baseQuery : fetchBaseQuery({
     //baseUrl : "http://localhost:5000/api/v1/",
