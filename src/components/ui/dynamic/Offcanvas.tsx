@@ -4,6 +4,7 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { closeOffcanvas } from "redux/features/offcanvas/offcanvasSlice";
 import { useAppDispatch } from "redux/hooks";
+import { toast } from "sonner";
 import { TOfcanvasProps } from "types/offcanvasTypes";
 import CommonButton from "../common/CommonButton";
 
@@ -24,18 +25,25 @@ const Offcanvas: React.FC<TOfcanvasProps> = ({
       const fieldValue = data[name];
       if (type === "year" || type === "month") {
         dynamicPayload[name] = fieldValue
-          ? dayjs(fieldValue).format(type === "year" ? "YYYY" : "YYYY-MM")
+          ? dayjs(fieldValue).format(type === "year" ? "YYYY" : "MMMM")
           : null;
       } else if (fieldValue) {
         dynamicPayload[name] = fieldValue;
+        console.log(dynamicPayload[name]);
       }
     });
     return dynamicPayload;
   };
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     const payload = createDynamicPayload(data);
-    console.log(payload);
+    try {
+      const response = await onSubmitApi(payload).unwrap();
+      toast.success(`${response?.message}`);
+    } catch (error) {
+      console.log("🚀 ~ onSubmit ~ error:", error);
+      toast.error(`${error?.data?.message}`);
+    }
   };
 
   return (
@@ -105,6 +113,11 @@ const Offcanvas: React.FC<TOfcanvasProps> = ({
                             placeholder={placeholder}
                             options={options}
                           />
+                        ) : type === "textArea" ? (
+                          <Input.TextArea
+                            {...field}
+                            placeholder={placeholder}
+                          />
                         ) : null}
                       </Form.Item>
                     )}
@@ -113,7 +126,7 @@ const Offcanvas: React.FC<TOfcanvasProps> = ({
               )
             )}
             <Form.Item>
-              <CommonButton title="Submit" variant="primary" />
+              <CommonButton type="submit" title="Submit" variant="secondary" />
             </Form.Item>
           </Col>
         </Row>

@@ -1,39 +1,44 @@
 import DataTable from "@components/ui/dynamic/DataTable";
 import Offcanvas from "@components/ui/dynamic/Offcanvas";
 import TitleAndBtn from "@components/ui/dynamic/TitleAndBtn";
-import { useCreateSemesterMutation } from "redux/features/academicManagement/academicManagement";
+import {
+  useCreateSemesterMutation,
+  useGetSemesterListQuery,
+} from "redux/features/academicManagement/academicManagement";
 import { useAppSelector } from "redux/hooks";
 
 const AcademicSemester = () => {
   const { open } = useAppSelector((state) => state.offcanvas);
   const [createAcademicSemester] = useCreateSemesterMutation();
+  const { data } = useGetSemesterListQuery(undefined);
+  console.log("🚀 ~ AcademicSemester ~ data:", data);
 
-  const data = [
-    {
-      id: 1,
-      name: "Autumn",
-      code: "01",
-      year: "2021",
-      startMonth: "January",
-      endMonth: "June",
-    },
-    {
-      id: 2,
-      name: "Summer",
-      code: "02",
-      year: "2021",
-      startMonth: "July",
-      endMonth: "December",
-    },
-    {
-      id: 3,
-      name: "Fall",
-      code: "03",
-      year: "2021",
-      startMonth: "January",
-      endMonth: "June",
-    },
-  ];
+  // const data = [
+  //   {
+  //     id: 1,
+  //     name: "Autumn",
+  //     code: "01",
+  //     year: "2021",
+  //     startMonth: "January",
+  //     endMonth: "June",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Summer",
+  //     code: "02",
+  //     year: "2021",
+  //     startMonth: "July",
+  //     endMonth: "December",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Fall",
+  //     code: "03",
+  //     year: "2021",
+  //     startMonth: "January",
+  //     endMonth: "June",
+  //   },
+  // ];
 
   //form input fields
   const formFields = [
