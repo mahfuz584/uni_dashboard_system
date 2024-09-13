@@ -1,44 +1,69 @@
 import { Table } from "antd";
-import { ColumnsType } from "antd/es/table";
+import { ColumnType } from "antd/es/table";
+import React from "react";
+import Loader from "../common/Loader";
 
-const DataTable = () => {
-  const dataSource = [
-    {
-      key: "1",
-      name: "Mike",
-      age: 32,
-      address: "10 Downing Street",
-    },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
-  ];
-  const columns: ColumnsType = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      align: "center",
-      key: "name",
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      align: "center",
-      key: "age",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      align: "center",
-      key: "address",
-    },
-  ];
+type TDataProps = {
+  columns: ColumnType<any>[];
+  datasource: object[];
+  loading: boolean;
+  setParams?: React.Dispatch<React.SetStateAction<any[]>>;
+};
+
+const DataTable: React.FC<TDataProps> = ({
+  columns,
+  datasource,
+  loading,
+  setParams,
+}) => {
+  // for unique key error
+  const dataSourceKey = datasource?.map((item, indx) => {
+    return {
+      ...item,
+      key: indx,
+    };
+  });
+
+  //filter params
+  const onChange: any = (
+    // pagination: TableProps<any>["pagination"],
+    filters: Record<string, string[]>,
+    // sorter: any,
+    extra: any
+  ) => {
+    if (extra.action === "filter") {
+      const queryParams = [] as any;
+      Object.keys(filters)?.forEach((key) => {
+        const filterValues = filters[key] as string[];
+        filterValues?.forEach((value) => {
+          queryParams.push({
+            name: key,
+            value: value,
+          });
+        });
+      });
+      if (setParams) {
+        setParams(queryParams);
+      }
+    }
+  };
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader />
+      </div>
+    );
+
   return (
     <>
-      <Table dataSource={dataSource} columns={columns} bordered />
+      <Table
+        dataSource={dataSourceKey}
+        columns={columns}
+        bordered
+        onChange={onChange}
+      />
+      {/* <Table dataSource={dataSourceKey} columns={modifiedColumns} bordered /> */}
     </>
   );
 };

@@ -18,3 +18,8 @@ export type TOfcanvasProps = {
     onSubmitApi: (data: any) => void;
     onSemsterChange ?: (value: string, setValue: (name: string, value: any) => void) => void | any;
   };
+ export interface ApiResponse {
+    message: string;
+    // Other properties can be added here if needed
+  }
+  
