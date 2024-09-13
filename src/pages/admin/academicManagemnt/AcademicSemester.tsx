@@ -87,6 +87,7 @@ const AcademicSemester = () => {
       filterSearch: true,
     },
   ];
+
   //form input fields
   const formFields = [
     {
