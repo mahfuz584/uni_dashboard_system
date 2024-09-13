@@ -1,45 +1,92 @@
 import DataTable from "@components/ui/dynamic/DataTable";
 import Offcanvas from "@components/ui/dynamic/Offcanvas";
 import TitleAndBtn from "@components/ui/dynamic/TitleAndBtn";
+import { TableColumnType } from "antd";
+import { useState } from "react";
 import {
   useCreateSemesterMutation,
   useGetSemesterListQuery,
 } from "redux/features/academicManagement/academicManagement";
 import { useAppSelector } from "redux/hooks";
 
+type TQueryParams = {
+  name: string;
+  value: string;
+};
+export type TDataTypes = {
+  title: string;
+  align: string;
+  key: string;
+  render?: any;
+  dataIndex?: string;
+  filters?: { text: string; value: string }[];
+  // onFilter?: (value: any, record: any) => boolean;
+  filterSearch?: boolean;
+  // name?: string;
+};
+
 const AcademicSemester = () => {
+  const [params, setParams] = useState<TQueryParams[]>([]);
+
   const { open } = useAppSelector((state) => state.offcanvas);
   const [createAcademicSemester] = useCreateSemesterMutation();
-  const { data } = useGetSemesterListQuery(undefined);
-  console.log("🚀 ~ AcademicSemester ~ data:", data);
+  const { data: { semseterList = [] } = {}, isLoading } =
+    useGetSemesterListQuery(params);
 
-  // const data = [
-  //   {
-  //     id: 1,
-  //     name: "Autumn",
-  //     code: "01",
-  //     year: "2021",
-  //     startMonth: "January",
-  //     endMonth: "June",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Summer",
-  //     code: "02",
-  //     year: "2021",
-  //     startMonth: "July",
-  //     endMonth: "December",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Fall",
-  //     code: "03",
-  //     year: "2021",
-  //     startMonth: "January",
-  //     endMonth: "June",
-  //   },
-  // ];
-
+  //data table columns
+  const columns: TableColumnType<TDataTypes>[] = [
+    {
+      title: "Serial No",
+      align: "center",
+      key: "serial",
+      render: (_, __, index) => index + 1,
+    },
+    {
+      title: "Semester Name",
+      dataIndex: "name",
+      align: "center",
+      key: "name",
+      filters: [
+        { text: "Autumn", value: "Autumn" },
+        { text: "Summer", value: "Summer" },
+        { text: "Fall", value: "Fall" },
+      ],
+      // onFilter: (value, record) => {
+      //   return record.name === value;
+      // },
+      filterSearch: true,
+    },
+    {
+      title: "Semester Code",
+      dataIndex: "code",
+      align: "center",
+      key: "code",
+    },
+    {
+      title: "Start Month",
+      dataIndex: "startMonth",
+      align: "center",
+      key: "startMonth",
+    },
+    {
+      title: "End Month",
+      dataIndex: "endMonth",
+      align: "center",
+      key: "endMonth",
+    },
+    {
+      title: "Academic Year",
+      dataIndex: "year",
+      align: "center",
+      key: "year",
+      filters: [
+        { text: "2021", value: "2021" },
+        { text: "2022", value: "2022" },
+        { text: "2023", value: "2023" },
+      ],
+      filterSearch: true,
+    },
+  ];
   //form input fields
   const formFields = [
     {
@@ -122,7 +169,12 @@ const AcademicSemester = () => {
   return (
     <>
       <TitleAndBtn title="Academic Semester" />
-      <DataTable />
+      <DataTable
+        setParams={setParams}
+        columns={columns}
+        datasource={semseterList}
+        loading={isLoading}
+      />
       <Offcanvas {...props} />
     </>
   );

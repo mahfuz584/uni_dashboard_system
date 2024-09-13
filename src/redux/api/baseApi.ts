@@ -56,14 +56,14 @@ const customBaseQueryWithRefreshToken : BaseQueryFn<FetchArgs,BaseQueryApi,Defin
 export const baseApi = createApi({
     reducerPath : "baseApi",
     baseQuery : customBaseQueryWithRefreshToken,
-    refetchOnMountOrArgChange : true,
+    // refetchOnMountOrArgChange : true,
+    keepUnusedDataFor : 10 * 24 * 60 * 60,
+    tagTypes : ["Semester"],
     //baseQuery noraml look
     //baseQuery : fetchBaseQuery({
     //baseUrl : "http://localhost:5000/api/v1/",
     //credentials : "include"
     //})
-    endpoints : () =>({
-        
-    })
+    endpoints : () =>({})
     
 })

@@ -29,7 +29,6 @@ const Offcanvas: React.FC<TOfcanvasProps> = ({
           : null;
       } else if (fieldValue) {
         dynamicPayload[name] = fieldValue;
-        console.log(dynamicPayload[name]);
       }
     });
     return dynamicPayload;
@@ -38,10 +37,10 @@ const Offcanvas: React.FC<TOfcanvasProps> = ({
   const onSubmit = async (data: any) => {
     const payload = createDynamicPayload(data);
     try {
-      const response = await onSubmitApi(payload).unwrap();
-      toast.success(`${response?.message}`);
-    } catch (error) {
-      console.log("🚀 ~ onSubmit ~ error:", error);
+      const response = onSubmitApi(payload) as unknown as { message: string };
+      dispatch(closeOffcanvas());
+      toast.success(`${response.message}`);
+    } catch (error: any) {
       toast.error(`${error?.data?.message}`);
     }
   };
