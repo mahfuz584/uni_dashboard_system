@@ -24,14 +24,14 @@ const DataTable: React.FC<TDataProps> = ({
     };
   });
 
-  //filter params
-  const onChange: any = (
-    // pagination: TableProps<any>["pagination"],
-    filters: Record<string, string[]>,
-    // sorter: any,
+  //dynamic filter params for table
+  const onChange = (
+    _pagination: any,
+    filters: any,
+    _sorter: any,
     extra: any
   ) => {
-    if (extra.action === "filter") {
+    if (extra?.action === "filter") {
       const queryParams = [] as any;
       Object.keys(filters)?.forEach((key) => {
         const filterValues = filters[key] as string[];
@@ -47,6 +47,35 @@ const DataTable: React.FC<TDataProps> = ({
       }
     }
   };
+
+  // filter params
+  // const onChange = (
+  //   pagination,
+  //   filters: Record<string, string[]>,
+  //   sorter,
+  //   extra: any
+  //   console.log("extra:", extra); // Verify extra parameter
+
+  //   if (extra?.action === "filter") {
+  //     const queryParams: { name: string; value: string }[] = [];
+
+  //     Object.keys(filters).forEach((key) => {
+  //       const filterValues = filters[key];
+  //       filterValues.forEach((value) => {
+  //         queryParams.push({
+  //           name: key,
+  //           value: value,
+  //         });
+  //       });
+  //     });
+
+  //     console.log("queryParams:", queryParams); // Verify queryParams
+
+  //     if (setParams) {
+  //       setParams(queryParams);
+  //     }
+  //   }
+  // };
 
   if (loading)
     return (
