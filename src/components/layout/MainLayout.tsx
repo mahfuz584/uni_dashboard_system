@@ -26,23 +26,13 @@ const MainLayout = () => {
       <SideBar collapsed={collapsed} setCollapsed={setCollapsed} />
       <Layout>
         <Header style={{ padding: "0px 20px", background: colorBgContainer }}>
-          {/* <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: "16px",
-              width: 64,
-              height: 64,
-            }}
-          /> */}
           <Button onClick={handleLogout}>Logout</Button>
         </Header>
         <Content
           style={{
             margin: "24px 16px",
             padding: 24,
-            minHeight: 280,
+            minHeight: "85vh",
             height: "fit-content",
             background: colorBgContainer,
             borderRadius: borderRadiusLG,

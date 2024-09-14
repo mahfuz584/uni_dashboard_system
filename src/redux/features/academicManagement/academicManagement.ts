@@ -29,6 +29,17 @@ const AcademicSemesterListApi = baseApi.injectEndpoints({
   }),
 });
 
+const singleAcademicSemesterApi = baseApi.injectEndpoints({
+  endpoints : (builder) => ({
+    getSingleSemester : builder.query({
+      query : (id) => ({
+        url : `/academic-semesters/${id}`,
+        method : "GET",
+      })
+    })
+  })
+})
+
 const CreateAcademicSemesterApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createSemester: builder.mutation({
@@ -44,3 +55,4 @@ const CreateAcademicSemesterApi = baseApi.injectEndpoints({
 
 export const { useCreateSemesterMutation } = CreateAcademicSemesterApi;
 export const { useGetSemesterListQuery } = AcademicSemesterListApi;
+export const { useGetSingleSemesterQuery } = singleAcademicSemesterApi;
