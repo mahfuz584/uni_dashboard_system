@@ -2,12 +2,18 @@ import { sideNavIiemsGenerator } from "@utils/sideNavItemsGenerator";
 import { Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
+import React from "react";
 import { useAppSelector } from "redux/hooks";
 import { adminPaths } from "routes/admin.routes";
 import { facultyPaths } from "routes/faculty.routes";
 import { studentPaths } from "routes/student.routes";
 
-const SideBar = ({ collapsed }: { collapsed: boolean }) => {
+type TSideBarProps = {
+  collapsed: boolean;
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const SideBar = ({ collapsed, setCollapsed }: TSideBarProps) => {
   const { user: { role = "" } = {} } = useAppSelector(
     (state) => state?.auth
   ) as { user: { role: string } };
@@ -37,24 +43,17 @@ const SideBar = ({ collapsed }: { collapsed: boolean }) => {
 
   return (
     <Sider
-      collapsedWidth={120}
-      width={250}
-      trigger={null}
       collapsible
       collapsed={collapsed}
+      onCollapse={(value) => setCollapsed(value)}
+      // style={siderStyle}
+      collapsedWidth={80}
+      width={250}
     >
-      <div
-        style={{
-          height: "5rem",
-          textAlign: "center",
-          color: "white",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+      <div className="h-[5rem] text-center text-white flex items-center justify-center ">
         EDU PORTAL
       </div>
+      <div className="demo-logo-vertical" />
       <Menu
         theme="dark"
         mode="inline"
