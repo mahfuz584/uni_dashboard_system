@@ -64,7 +64,7 @@ const AcademicSemester = () => {
               ? "purple"
               : row?.name === "Summer"
               ? "cyan"
-              : "orange"
+              : "processing"
           }
         >
           {row?.name}
@@ -73,7 +73,6 @@ const AcademicSemester = () => {
     },
     {
       title: "Semester Code",
-
       align: "center",
       key: "code",
       render: (row) => (
@@ -83,7 +82,7 @@ const AcademicSemester = () => {
               ? "purple"
               : row?.name === "Summer"
               ? "cyan"
-              : "orange"
+              : "processing"
           }
         >
           {row?.code}
@@ -101,7 +100,7 @@ const AcademicSemester = () => {
               ? "purple"
               : row?.name === "Summer"
               ? "cyan"
-              : "orange"
+              : "processing"
           }
         >
           {row?.startMonth}
@@ -119,7 +118,7 @@ const AcademicSemester = () => {
               ? "purple"
               : row?.name === "Summer"
               ? "cyan"
-              : "orange"
+              : "processing"
           }
         >
           {row?.endMonth}
@@ -143,7 +142,7 @@ const AcademicSemester = () => {
               ? "purple"
               : row?.name === "Summer"
               ? "cyan"
-              : "orange"
+              : "processing"
           }
         >
           {row?.year}
@@ -237,7 +236,7 @@ const AcademicSemester = () => {
               ? "purple"
               : row?.name === "Summer"
               ? "cyan"
-              : "orange"
+              : "processing"
           }
         >
           {row?.name}
@@ -255,7 +254,7 @@ const AcademicSemester = () => {
               ? "purple"
               : row?.name === "Summer"
               ? "cyan"
-              : "orange"
+              : "processing"
           }
         >
           {row?.code}
@@ -274,7 +273,7 @@ const AcademicSemester = () => {
               ? "purple"
               : row?.name === "Summer"
               ? "cyan"
-              : "orange"
+              : "processing"
           }
         >
           {row?.startMonth}
@@ -293,7 +292,7 @@ const AcademicSemester = () => {
               ? "purple"
               : row?.name === "Summer"
               ? "cyan"
-              : "orange"
+              : "processing"
           }
         >
           {row?.endMonth}
@@ -312,7 +311,7 @@ const AcademicSemester = () => {
               ? "purple"
               : row?.name === "Summer"
               ? "cyan"
-              : "orange"
+              : "processing"
           }
         >
           {row?.year}
