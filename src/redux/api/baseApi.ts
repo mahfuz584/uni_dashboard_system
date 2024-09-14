@@ -58,7 +58,7 @@ export const baseApi = createApi({
     baseQuery : customBaseQueryWithRefreshToken,
     // refetchOnMountOrArgChange : true,
     keepUnusedDataFor : 10 * 24 * 60 * 60,
-    tagTypes : ["Semester"],
+    tagTypes : ["Semester","Faculty"],
     //baseQuery noraml look
     //baseQuery : fetchBaseQuery({
     //baseUrl : "http://localhost:5000/api/v1/",

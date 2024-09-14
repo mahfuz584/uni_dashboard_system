@@ -11,7 +11,6 @@ const AcademicSemesterListApi = baseApi.injectEndpoints({
             params.append(arg.name, arg.value);
           });
         }
-
         return {
           url: "/academic-semesters",
           method: "GET",
@@ -22,7 +21,7 @@ const AcademicSemesterListApi = baseApi.injectEndpoints({
       transformResponse: (response: any) => {
         return {
           semseterList: response?.data,
-          pagination: response?.pagination,
+          meta: response?.meta,
         };
       },
     }),

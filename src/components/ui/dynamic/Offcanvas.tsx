@@ -5,7 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import { closeOffcanvas } from "redux/features/offcanvas/offcanvasSlice";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { toast } from "sonner";
-import { TOfcanvasProps } from "types/offcanvasTypes";
+import { ApiResponse, TOfcanvasProps } from "types/offcanvasTypes";
 import CommonButton from "../common/CommonButton";
 
 const Offcanvas: React.FC<TOfcanvasProps> = ({
@@ -37,16 +37,22 @@ const Offcanvas: React.FC<TOfcanvasProps> = ({
   const onSubmit = async (data: any) => {
     const payload = createDynamicPayload(data);
     try {
-      const response = onSubmitApi(payload) as unknown as { message: string };
-      dispatch(closeOffcanvas());
-      toast.success(`${response.message}`);
+      const response = (await onSubmitApi(payload)) as unknown as ApiResponse;
+      if (response?.data?.success) {
+        toast.success(response.data.message);
+        dispatch(closeOffcanvas());
+      } else {
+        toast.error(response?.error?.data?.message);
+      }
     } catch (error: any) {
-      toast.error(`${error?.data?.message}`);
+      console.log(error);
+      toast.error("Something went wrong");
     }
   };
 
   return (
     <Drawer
+      width={400}
       title="Basic Drawer"
       placement={"right"}
       onClose={() => dispatch(closeOffcanvas())}

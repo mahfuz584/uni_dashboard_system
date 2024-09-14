@@ -13,7 +13,14 @@ const RetriveModal = <T extends Record<string, any>>({
 }) => {
   const { open } = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
+  //convert object to array
   const modifiedData = [retriveData];
+  const dataSourceKey = modifiedData?.map((item, indx) => {
+    return {
+      ...item,
+      key: indx,
+    };
+  });
 
   return (
     <Modal
@@ -26,7 +33,7 @@ const RetriveModal = <T extends Record<string, any>>({
     >
       <Table
         columns={columns}
-        dataSource={modifiedData}
+        dataSource={dataSourceKey}
         className="my-14"
         pagination={false}
       />
