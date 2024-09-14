@@ -160,7 +160,14 @@ const AcademicSemester = () => {
     }
   };
 
-  const props = {
+  const dataTableProps = {
+    columns: columns,
+    datasource: semseterList,
+    loading: isLoading,
+    setParams: setParams,
+  };
+
+  const offcanvasProps = {
     open: open,
     formFields: formFields,
     onSubmitApi: createAcademicSemester,
@@ -170,13 +177,8 @@ const AcademicSemester = () => {
   return (
     <>
       <TitleAndBtn title="Academic Semester" />
-      <DataTable
-        setParams={setParams}
-        columns={columns}
-        datasource={semseterList}
-        loading={isLoading}
-      />
-      <Offcanvas {...props} />
+      <DataTable {...dataTableProps} />
+      <Offcanvas {...offcanvasProps} />
     </>
   );
 };

@@ -1,4 +1,3 @@
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout, theme } from "antd";
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -23,11 +22,11 @@ const MainLayout = () => {
   };
 
   return (
-    <Layout style={{ height: "100vh" }}>
-      <SideBar collapsed={collapsed} />
+    <Layout>
+      <SideBar collapsed={collapsed} setCollapsed={setCollapsed} />
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
-          <Button
+        <Header style={{ padding: "0px 20px", background: colorBgContainer }}>
+          {/* <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
@@ -36,7 +35,7 @@ const MainLayout = () => {
               width: 64,
               height: 64,
             }}
-          />
+          /> */}
           <Button onClick={handleLogout}>Logout</Button>
         </Header>
         <Content
@@ -44,8 +43,10 @@ const MainLayout = () => {
             margin: "24px 16px",
             padding: 24,
             minHeight: 280,
+            height: "fit-content",
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
+            overflow: "initial",
           }}
         >
           <Outlet />
