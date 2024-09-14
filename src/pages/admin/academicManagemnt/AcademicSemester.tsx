@@ -1,40 +1,42 @@
 import DataTable from "@components/ui/dynamic/DataTable";
 import Offcanvas from "@components/ui/dynamic/Offcanvas";
+import RetriveModal from "@components/ui/dynamic/RetriveModal";
 import TitleAndBtn from "@components/ui/dynamic/TitleAndBtn";
-import { TableColumnType } from "antd";
+import { TableProps, Tag } from "antd";
 import { useState } from "react";
+import { IoIosEye } from "react-icons/io";
 import {
   useCreateSemesterMutation,
   useGetSemesterListQuery,
+  useGetSingleSemesterQuery,
 } from "redux/features/academicManagement/academicManagement";
-import { useAppSelector } from "redux/hooks";
+import { openModal } from "redux/features/modal/modalSlice";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 type TQueryParams = {
   name: string;
   value: string;
 };
-export type TDataTypes = {
-  title: string;
-  align: string;
-  key: string;
-  render?: any;
-  dataIndex?: string;
-  filters?: { text: string; value: string }[];
-  // onFilter?: (value: any, record: any) => boolean;
-  filterSearch?: boolean;
-  // name?: string;
-};
 
 const AcademicSemester = () => {
   const [params, setParams] = useState<TQueryParams[]>([]);
+  const dispatch = useAppDispatch();
 
-  const { open } = useAppSelector((state) => state.offcanvas);
+  const { open: modalOpen } = useAppSelector((state) => state.modal);
+
   const [createAcademicSemester] = useCreateSemesterMutation();
   const { data: { semseterList = [] } = {}, isLoading } =
     useGetSemesterListQuery(params);
 
+  const { data: { data: retriveData = {} } = {} } = useGetSingleSemesterQuery(
+    modalOpen,
+    {
+      skip: !modalOpen,
+    }
+  );
+
   //data table columns
-  const columns: TableColumnType<TDataTypes>[] = [
+  const columns: TableProps["columns"] = [
     {
       title: "Serial No",
       align: "center",
@@ -43,7 +45,7 @@ const AcademicSemester = () => {
     },
     {
       title: "Semester Name",
-      dataIndex: "name",
+      // dataIndex: "name",
       align: "center",
       key: "name",
       filters: [
@@ -55,28 +57,77 @@ const AcademicSemester = () => {
       //   return record.name === value;
       // },
       filterSearch: true,
+      render: (row) => (
+        <Tag
+          color={
+            row?.name === "Fall"
+              ? "purple"
+              : row?.name === "Summer"
+              ? "cyan"
+              : "orange"
+          }
+        >
+          {row?.name}
+        </Tag>
+      ),
     },
     {
       title: "Semester Code",
-      dataIndex: "code",
+
       align: "center",
       key: "code",
+      render: (row) => (
+        <Tag
+          color={
+            row?.name === "Fall"
+              ? "purple"
+              : row?.name === "Summer"
+              ? "cyan"
+              : "orange"
+          }
+        >
+          {row?.code}
+        </Tag>
+      ),
     },
     {
       title: "Start Month",
-      dataIndex: "startMonth",
       align: "center",
       key: "startMonth",
+      render: (row) => (
+        <Tag
+          color={
+            row?.name === "Fall"
+              ? "purple"
+              : row?.name === "Summer"
+              ? "cyan"
+              : "orange"
+          }
+        >
+          {row?.startMonth}
+        </Tag>
+      ),
     },
     {
       title: "End Month",
-      dataIndex: "endMonth",
       align: "center",
       key: "endMonth",
+      render: (row) => (
+        <Tag
+          color={
+            row?.name === "Fall"
+              ? "purple"
+              : row?.name === "Summer"
+              ? "cyan"
+              : "orange"
+          }
+        >
+          {row?.endMonth}
+        </Tag>
+      ),
     },
     {
       title: "Academic Year",
-      dataIndex: "year",
       align: "center",
       key: "year",
       filters: [
@@ -85,6 +136,32 @@ const AcademicSemester = () => {
         { text: "2023", value: "2023" },
       ],
       filterSearch: true,
+      render: (row) => (
+        <Tag
+          color={
+            row?.name === "Fall"
+              ? "purple"
+              : row?.name === "Summer"
+              ? "cyan"
+              : "orange"
+          }
+        >
+          {row?.year}
+        </Tag>
+      ),
+    },
+    {
+      title: "Action",
+      align: "center",
+      key: "action",
+      render: (row) => (
+        <div
+          onClick={() => dispatch(openModal(row?._id))}
+          className="flex justify-center cursor-pointer"
+        >
+          <IoIosEye className="text-2xl text-[#112a41]" />
+        </div>
+      ),
     },
   ];
 
@@ -147,6 +224,103 @@ const AcademicSemester = () => {
     },
   ];
 
+  //single semester columns
+  const retrivedDatacolumns: TableProps["columns"] = [
+    {
+      title: "Name",
+      key: "name",
+      align: "center",
+      render: (row) => (
+        <Tag
+          color={
+            row?.name === "Fall"
+              ? "purple"
+              : row?.name === "Summer"
+              ? "cyan"
+              : "orange"
+          }
+        >
+          {row?.name}
+        </Tag>
+      ),
+    },
+    {
+      title: "Code",
+      key: "code",
+      align: "center",
+      render: (row) => (
+        <Tag
+          color={
+            row?.name === "Fall"
+              ? "purple"
+              : row?.name === "Summer"
+              ? "cyan"
+              : "orange"
+          }
+        >
+          {row?.code}
+        </Tag>
+      ),
+    },
+    {
+      title: "Start Month",
+      // dataIndex: "startMonth",
+      key: "startMonth",
+      align: "center",
+      render: (row) => (
+        <Tag
+          color={
+            row?.name === "Fall"
+              ? "purple"
+              : row?.name === "Summer"
+              ? "cyan"
+              : "orange"
+          }
+        >
+          {row?.startMonth}
+        </Tag>
+      ),
+    },
+    {
+      title: "End Month",
+
+      key: "endMonth",
+      align: "center",
+      render: (row) => (
+        <Tag
+          color={
+            row?.name === "Fall"
+              ? "purple"
+              : row?.name === "Summer"
+              ? "cyan"
+              : "orange"
+          }
+        >
+          {row?.endMonth}
+        </Tag>
+      ),
+    },
+    {
+      title: "Year",
+
+      key: "year",
+      align: "center",
+      render: (row) => (
+        <Tag
+          color={
+            row?.name === "Fall"
+              ? "purple"
+              : row?.name === "Summer"
+              ? "cyan"
+              : "orange"
+          }
+        >
+          {row?.year}
+        </Tag>
+      ),
+    },
+  ];
+
   const handleSemesterChange = (
     value: string,
     setValue: (name: string, value: any) => void
@@ -168,10 +342,15 @@ const AcademicSemester = () => {
   };
 
   const offcanvasProps = {
-    open: open,
     formFields: formFields,
     onSubmitApi: createAcademicSemester,
     onSemsterChange: handleSemesterChange,
+  };
+
+  const retrivedData = {
+    retriveData: retriveData,
+    title: " Academic Semester Details",
+    columns: retrivedDatacolumns,
   };
 
   return (
@@ -179,6 +358,7 @@ const AcademicSemester = () => {
       <TitleAndBtn title="Academic Semester" />
       <DataTable {...dataTableProps} />
       <Offcanvas {...offcanvasProps} />
+      <RetriveModal {...retrivedData} />
     </>
   );
 };

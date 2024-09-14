@@ -86,12 +86,7 @@ const DataTable: React.FC<TDataProps> = ({
 
   return (
     <>
-      <Table
-        dataSource={dataSourceKey}
-        columns={columns}
-        bordered
-        onChange={onChange}
-      />
+      <Table dataSource={dataSourceKey} columns={columns} onChange={onChange} />
       {/* <Table dataSource={dataSourceKey} columns={modifiedColumns} bordered /> */}
     </>
   );

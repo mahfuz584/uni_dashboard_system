@@ -3,19 +3,19 @@ import dayjs from "dayjs";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { closeOffcanvas } from "redux/features/offcanvas/offcanvasSlice";
-import { useAppDispatch } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { toast } from "sonner";
 import { TOfcanvasProps } from "types/offcanvasTypes";
 import CommonButton from "../common/CommonButton";
 
 const Offcanvas: React.FC<TOfcanvasProps> = ({
-  open,
   formFields,
   onSubmitApi,
   onSemsterChange,
 }) => {
   const { control, handleSubmit, setValue } = useForm();
   const dispatch = useAppDispatch();
+  const { open } = useAppSelector((state) => state.offcanvas);
 
   ///building the dynamic payload
   const createDynamicPayload = (data: any) => {

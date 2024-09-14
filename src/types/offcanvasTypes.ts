@@ -13,7 +13,7 @@
     };
   };
 export type TOfcanvasProps = {
-    open: boolean;
+  
     formFields: TformFields[];
     onSubmitApi: (data: any) => void;
     onSemsterChange ?: (value: string, setValue: (name: string, value: any) => void) => void | any;

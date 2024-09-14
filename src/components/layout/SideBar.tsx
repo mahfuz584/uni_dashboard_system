@@ -46,11 +46,10 @@ const SideBar = ({ collapsed, setCollapsed }: TSideBarProps) => {
       collapsible
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
-      // style={siderStyle}
-      collapsedWidth={80}
+      collapsedWidth={85}
       width={250}
     >
-      <div className="h-[5rem] text-center text-white flex items-center justify-center ">
+      <div className="h-[5rem] text-center text-white flex items-center justify-center">
         EDU PORTAL
       </div>
       <div className="demo-logo-vertical" />
