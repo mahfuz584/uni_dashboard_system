@@ -9,7 +9,8 @@ import {
   useCreateSemesterMutation,
   useGetSemesterListQuery,
   useGetSingleSemesterQuery,
-} from "redux/features/academicManagement/academicManagement";
+} from "redux/features/academicManagement/academicSemesterApi";
+
 import { openModal } from "redux/features/modal/modalSlice";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 

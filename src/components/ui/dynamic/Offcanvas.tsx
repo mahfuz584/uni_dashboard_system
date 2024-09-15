@@ -42,7 +42,7 @@ const Offcanvas: React.FC<TOfcanvasProps> = ({
         toast.success(response.data.message);
         dispatch(closeOffcanvas());
       } else {
-        toast.error(response?.error?.data?.message);
+        toast.error(response?.error?.data?.errorSources?.[0]?.message);
       }
     } catch (error: any) {
       console.log(error);
