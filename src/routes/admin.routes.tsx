@@ -4,9 +4,9 @@ import AcademicFaculty from "@pages/admin/academicManagemnt/AcademicFaculty";
 import AcademicSemester from "@pages/admin/academicManagemnt/AcademicSemester";
 
 import AdminDashboard from "@pages/admin/AdminDashboard";
-import CreateAdmin from "@pages/admin/CreateAdmin";
-import CreateFaculty from "@pages/admin/CreateFaculty";
-import CreateStudent from "@pages/admin/CreateStudent";
+import CreateAdmin from "@pages/admin/userManagement/CreateAdmin";
+import CreateFaculty from "@pages/admin/userManagement/CreateFaculty";
+import CreateStudent from "@pages/admin/userManagement/CreateStudent";
 import { FaChalkboardTeacher, FaElementor } from "react-icons/fa";
 import { GrUserAdmin } from "react-icons/gr";
 import { LuLayoutDashboard } from "react-icons/lu";

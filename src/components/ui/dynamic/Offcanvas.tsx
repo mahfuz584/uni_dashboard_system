@@ -1,7 +1,12 @@
 import { Col, DatePicker, Drawer, Form, Input, Row, Select } from "antd";
 import dayjs from "dayjs";
 import React from "react";
-import { Controller, useForm } from "react-hook-form";
+import {
+  Controller,
+  FieldValues,
+  SubmitErrorHandler,
+  useForm,
+} from "react-hook-form";
 import { closeOffcanvas } from "redux/features/offcanvas/offcanvasSlice";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { toast } from "sonner";
@@ -13,7 +18,7 @@ const Offcanvas: React.FC<TOfcanvasProps> = ({
   onSubmitApi,
   onSemsterChange,
 }) => {
-  const { control, handleSubmit, setValue } = useForm();
+  const { control, handleSubmit, setValue, reset } = useForm();
   const dispatch = useAppDispatch();
   const { open } = useAppSelector((state) => state.offcanvas);
 
@@ -34,15 +39,16 @@ const Offcanvas: React.FC<TOfcanvasProps> = ({
     return dynamicPayload;
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit: SubmitErrorHandler<FieldValues> = async (data) => {
     const payload = createDynamicPayload(data);
     try {
       const response = (await onSubmitApi(payload)) as unknown as ApiResponse;
       if (response?.data?.success) {
         toast.success(response.data.message);
         dispatch(closeOffcanvas());
+        reset();
       } else {
-        toast.error(response?.error?.data?.message);
+        toast.error(response?.error?.data?.errorSources?.[0]?.message);
       }
     } catch (error: any) {
       console.log(error);

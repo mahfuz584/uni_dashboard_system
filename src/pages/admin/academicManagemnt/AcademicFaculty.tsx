@@ -2,14 +2,17 @@ import DataTable from "@components/ui/dynamic/DataTable";
 import Offcanvas from "@components/ui/dynamic/Offcanvas";
 import RetriveModal from "@components/ui/dynamic/RetriveModal";
 import TitleAndBtn from "@components/ui/dynamic/TitleAndBtn";
-import { acadFaculty } from "@lib/helper/AcademicFaculty/AcademicFacultyHelper";
+import { acadFaculty } from "@lib/helper/academicManagement/academicnManagementHelper";
+
 import { TableProps, Tag } from "antd";
+import { FaEdit } from "react-icons/fa";
 import { IoIosEye } from "react-icons/io";
 import {
   useCreateFacultyMutation,
   useGetAllFacultyQuery,
   useGetSingleFacultyQuery,
-} from "redux/features/academicFaculty/academicFaculty";
+} from "redux/features/academicManagement/academicFacultyAPI";
+
 import { openModal } from "redux/features/modal/modalSlice";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
@@ -18,6 +21,7 @@ const AcademicFaculty = () => {
   const { open } = useAppSelector((state) => state.modal);
   //form input fields
   const [createAcademicFaculty] = useCreateFacultyMutation();
+
   const { data: { data: facultyList = [] } = {}, isLoading } =
     useGetAllFacultyQuery(undefined);
   const { data: { data: retriveData = {} } = {} } = useGetSingleFacultyQuery(
@@ -61,11 +65,16 @@ const AcademicFaculty = () => {
       align: "center",
       key: "action",
       render: (row) => (
-        <div
-          onClick={() => dispatch(openModal(row?._id))}
-          className="flex justify-center cursor-pointer"
-        >
-          <IoIosEye className="text-2xl text-[#112a41]" />
+        <div className="flex justify-center gap-x-4">
+          <div
+            onClick={() => dispatch(openModal(row?._id))}
+            className="flex justify-center cursor-pointer"
+          >
+            <IoIosEye className="text-2xl text-[#112a41]" />
+          </div>
+          <div className="flex justify-center cursor-pointer">
+            <FaEdit className="text-[23px] text-[#112a41]" />
+          </div>
         </div>
       ),
     },
