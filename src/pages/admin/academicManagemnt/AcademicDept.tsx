@@ -1,7 +1,8 @@
 import DataTable from "@components/ui/dynamic/DataTable";
 import Offcanvas from "@components/ui/dynamic/Offcanvas";
 import TitleAndBtn from "@components/ui/dynamic/TitleAndBtn";
-import { academicDept } from "@lib/helper/AcademicDept/AcademicDeptHelper";
+import { academicDept } from "@lib/helper/academicManagement/academicnManagementHelper";
+
 import { TableProps, Tag } from "antd";
 import { IoIosEye } from "react-icons/io";
 import {
@@ -79,7 +80,7 @@ const AcademicDept = () => {
       title: "Action",
       align: "center",
       key: "action",
-      render: (row) => (
+      render: (_row) => (
         <div
           // onClick={() => dispatch(openModal(row?._id))}
           className="flex justify-center cursor-pointer"

@@ -2,7 +2,7 @@ import DataTable from "@components/ui/dynamic/DataTable";
 import Offcanvas from "@components/ui/dynamic/Offcanvas";
 import RetriveModal from "@components/ui/dynamic/RetriveModal";
 import TitleAndBtn from "@components/ui/dynamic/TitleAndBtn";
-import { acadFaculty } from "@lib/helper/AcademicFaculty/AcademicFacultyHelper";
+import { acadFaculty } from "@lib/helper/academicManagement/academicnManagementHelper";
 
 import { TableProps, Tag } from "antd";
 import { FaEdit } from "react-icons/fa";
