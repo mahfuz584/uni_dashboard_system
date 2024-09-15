@@ -4,7 +4,7 @@ import React from "react";
 import {
   Controller,
   FieldValues,
-  SubmitErrorHandler,
+  SubmitHandler,
   useForm,
 } from "react-hook-form";
 import { closeOffcanvas } from "redux/features/offcanvas/offcanvasSlice";
@@ -39,7 +39,7 @@ const Offcanvas: React.FC<TOfcanvasProps> = ({
     return dynamicPayload;
   };
 
-  const onSubmit: SubmitErrorHandler<FieldValues> = async (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const payload = createDynamicPayload(data);
     try {
       const response = (await onSubmitApi(payload)) as unknown as ApiResponse;
