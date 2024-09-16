@@ -8,7 +8,7 @@ export type TSideBar = {
   icon?: ReactNode;
   children?: TSideBar[];
 };
-export const sideNavIiemsGenerator = (
+export const sideNavitemsGenerator = (
   sidebarItems: TSideBar[],
   userRole: string
 ) => {

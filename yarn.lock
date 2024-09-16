@@ -2523,6 +2523,11 @@ word-wrap@^1.2.5:
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.5.tgz#d2c45c6dd4fbce621a66f136cbe328afd0410b34"
   integrity sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==
 
+world_countries_lists@^2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/world_countries_lists/-/world_countries_lists-2.9.0.tgz#7d9117d58f6ed2fb9ef9632f680864c4ce2a6dd0"
+  integrity sha512-VAS+QcV3khDD120VhFOYx6ntSKHWdigp0+MSwj2wxdAnHpbPnKhDWkLOw8A1zxkMnFmpieG9pp30FW4etwHPWw==
+
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
