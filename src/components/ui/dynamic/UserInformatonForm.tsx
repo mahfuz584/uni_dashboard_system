@@ -1,12 +1,14 @@
 import { Col, DatePicker, Divider, Form, Input, Row, Select } from "antd";
-
 import {
   Controller,
   FieldValues,
   SubmitHandler,
   useForm,
 } from "react-hook-form";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css"; // Ensure styles are imported
 import CommonButton from "../common/CommonButton";
+
 type TUserInformatonForm = {
   inputFields: any[];
 };
@@ -15,7 +17,7 @@ const UserInformatonForm: React.FC<TUserInformatonForm> = ({ inputFields }) => {
   const { control, handleSubmit } = useForm();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+    console.log("🚀 ~ payload:", data);
   };
 
   return (
@@ -73,12 +75,28 @@ const UserInformatonForm: React.FC<TUserInformatonForm> = ({ inputFields }) => {
                         ) : type === "date" ? (
                           <DatePicker className="w-full" {...field} />
                         ) : type === "tel" ? (
-                          <Input
-                            type="tel"
+                          <PhoneInput
                             {...field}
-                            placeholder={placeholder}
+                            country={"bd"}
+                            enableSearch={true}
+                            inputStyle={{
+                              width: "100%",
+                              height: "32px",
+                              borderRadius: "5px",
+                              border: fieldState.error
+                                ? "1px solid #ff4d4f"
+                                : "1px solid #d9d9d9",
+                              padding: "4px 10px 3px 47px",
+                              fontSize: "14px",
+                            }}
+                            buttonStyle={{
+                              backgroundColor: "#f5f5f5",
+                            }}
+                            containerClass="ant-input"
                           />
-                        ) : null}
+                        ) : (
+                          <Input {...field} placeholder={placeholder} />
+                        )}
                       </Form.Item>
                     )}
                   />

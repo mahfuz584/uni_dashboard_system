@@ -14,6 +14,7 @@ import { baseApi } from "./api/baseApi";
 import authSlice from "./features/auth/authSlice";
 import modalSlice from "./features/modal/modalSlice";
 import offcanvasSlice from "./features/offcanvas/offcanvasSlice";
+import userManagementSlice from "./features/userManagement/userManagementSlice";
 
 //create persistor for storing the state in local storage and rehydrate the state
 
@@ -30,8 +31,9 @@ export const store = configureStore({
     [baseApi.reducerPath]: baseApi.reducer,
     // Add the authSlice reducer to the store
     auth: persistedAuthReducer,
-    offcanvas : offcanvasSlice,
-    modal : modalSlice
+    offcanvas: offcanvasSlice,
+    modal: modalSlice,
+    userPayload: userManagementSlice,
   },
   // Add the baseApi middleware to the store for handling API requests
   middleware: (getDefaultMiddleware) =>

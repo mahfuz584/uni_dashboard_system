@@ -219,7 +219,7 @@ export const studentFormFields = [
         label: "Admission Semester",
         type: "select",
         options: [
-          { label: "Autumn", value: "65b0104110b74fcbd7a25d92" },
+          { label: "Autumn", value: "65b0104110b74fcbd7a25d91" },
           { label: "Spring", value: "65b0104110b74fcbd7a25d92" },
         ],
         placeholder: "Select Admission Semester",
