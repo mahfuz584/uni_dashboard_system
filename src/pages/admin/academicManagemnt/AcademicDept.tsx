@@ -5,23 +5,23 @@ import { academicDept } from "@lib/helper/academicManagement/academicnManagement
 
 import { TableProps, Tag } from "antd";
 import { IoIosEye } from "react-icons/io";
-import {
-  useCreateDeptMutation,
-  useGetAllDeptQuery,
-} from "redux/features/academicManagement/academicDeptApi";
-import { useGetAllFacultyQuery } from "redux/features/academicManagement/academicFacultyAPI";
+import { useListApiQuery } from "redux/api/genericApi";
 
 import { useAppSelector } from "redux/hooks";
 
 const AcademicDept = () => {
   const { open } = useAppSelector((state) => state.modal);
-  const { data: { data: facultyList = [] } = {}, isLoading } =
-    useGetAllFacultyQuery(undefined, {
+  const { data: { data: facultyList = [] } = {}, isLoading } = useListApiQuery(
+    {
+      url: "/academic-faculties",
+    },
+    {
       skip: open,
-    });
-  const { data: { data: academicDeptList = [] } = {} } =
-    useGetAllDeptQuery(undefined);
-  const [createAcademicDept] = useCreateDeptMutation();
+    }
+  );
+  const { data: { data: academicDeptList = [] } = {} } = useListApiQuery({
+    url: "/academic-departments",
+  });
 
   //data table columns
   const columns: TableProps["columns"] = [
@@ -130,8 +130,7 @@ const AcademicDept = () => {
   };
   const offcanvasProps = {
     formFields: formFields,
-    onSubmitApi: createAcademicDept,
-    // onSemsterChange: handleSemesterChange,
+    postApi: "/academic-departments/create-academic-department",
   };
   return (
     <>

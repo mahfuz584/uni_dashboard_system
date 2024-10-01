@@ -1,6 +1,5 @@
 import UserInformatonForm from "@components/ui/dynamic/UserInformatonForm";
 import { useListApiQuery } from "redux/api/genericApi";
-import { useGetAllDeptQuery } from "redux/features/academicManagement/academicDeptApi";
 
 const CreateStudent = () => {
   // const [createStudent] = useCreateStudentMutation();
@@ -8,8 +7,9 @@ const CreateStudent = () => {
     url: "/academic-semesters",
   });
 
-  const { data: { data: academicDeptList = [] } = {} } =
-    useGetAllDeptQuery(undefined);
+  const { data: { data: academicDeptList = [] } = {} } = useListApiQuery({
+    url: "/academic-departments",
+  });
 
   const studentFormFields = [
     {
