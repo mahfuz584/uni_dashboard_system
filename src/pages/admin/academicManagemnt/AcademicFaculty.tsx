@@ -7,11 +7,7 @@ import { acadFaculty } from "@lib/helper/academicManagement/academicnManagementH
 import { TableProps, Tag } from "antd";
 import { FaEdit } from "react-icons/fa";
 import { IoIosEye } from "react-icons/io";
-import {
-  useCreateFacultyMutation,
-  useGetAllFacultyQuery,
-  useGetSingleFacultyQuery,
-} from "redux/features/academicManagement/academicFacultyAPI";
+import { useListApiQuery, useRetrieveApiQuery } from "redux/api/genericApi";
 
 import { openModal } from "redux/features/modal/modalSlice";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
@@ -20,12 +16,15 @@ const AcademicFaculty = () => {
   const dispatch = useAppDispatch();
   const { open } = useAppSelector((state) => state.modal);
   //form input fields
-  const [createAcademicFaculty] = useCreateFacultyMutation();
 
-  const { data: { data: facultyList = [] } = {}, isLoading } =
-    useGetAllFacultyQuery(undefined);
-  const { data: { data: retriveData = {} } = {} } = useGetSingleFacultyQuery(
-    open,
+  const { data: { data: facultyList = [] } = {}, isLoading } = useListApiQuery({
+    url: "/academic-faculties",
+  });
+  const { data: { data: retriveData = {} } = {} } = useRetrieveApiQuery(
+    {
+      url: "/academic-faculties",
+      id: open,
+    },
     {
       skip: !open,
     }
@@ -126,7 +125,7 @@ const AcademicFaculty = () => {
 
   const offcanvasProps = {
     formFields: formFields,
-    onSubmitApi: createAcademicFaculty,
+    postApi: "/academic-faculties/create-academic-faculty",
   };
 
   const retrivedData = {
