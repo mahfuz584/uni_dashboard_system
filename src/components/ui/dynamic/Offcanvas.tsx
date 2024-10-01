@@ -7,6 +7,7 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
+import { usePostAPiMutation } from "redux/api/genericApi";
 import { closeOffcanvas } from "redux/features/offcanvas/offcanvasSlice";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { toast } from "sonner";
@@ -15,12 +16,13 @@ import CommonButton from "../common/CommonButton";
 
 const Offcanvas: React.FC<TOfcanvasProps> = ({
   formFields,
-  onSubmitApi,
+  postApi,
   onSemsterChange,
 }) => {
   const { control, handleSubmit, setValue, reset } = useForm();
   const dispatch = useAppDispatch();
   const { open } = useAppSelector((state) => state.offcanvas);
+  const [onSubmitApi] = usePostAPiMutation();
 
   ///building the dynamic payload
   const createDynamicPayload = (data: any) => {
@@ -42,7 +44,10 @@ const Offcanvas: React.FC<TOfcanvasProps> = ({
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const payload = createDynamicPayload(data);
     try {
-      const response = (await onSubmitApi(payload)) as unknown as ApiResponse;
+      const response = (await onSubmitApi({
+        url: postApi,
+        body: payload,
+      })) as unknown as ApiResponse;
       if (response?.data?.success) {
         toast.success(response.data.message);
         dispatch(closeOffcanvas());

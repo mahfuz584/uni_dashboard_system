@@ -1,10 +1,12 @@
 import UserInformatonForm from "@components/ui/dynamic/UserInformatonForm";
+import { useListApiQuery } from "redux/api/genericApi";
 import { useGetAllDeptQuery } from "redux/features/academicManagement/academicDeptApi";
-import { useGetSemesterListQuery } from "redux/features/academicManagement/academicSemesterApi";
 
 const CreateStudent = () => {
-  const { data: { semseterList = [] } = {} } =
-    useGetSemesterListQuery(undefined);
+  // const [createStudent] = useCreateStudentMutation();
+  const { data: { data: semseterList = [] } = {} } = useListApiQuery({
+    url: "/academic-semesters",
+  });
 
   const { data: { data: academicDeptList = [] } = {} } =
     useGetAllDeptQuery(undefined);
@@ -13,6 +15,14 @@ const CreateStudent = () => {
     {
       segment: "Personal Information", // Segment for personal info
       fields: [
+        {
+          name: "image",
+          type: "img_file",
+          label: "Profile Picture",
+          rules: {
+            required: "Profile Picture is required",
+          },
+        },
         {
           label: "First Name",
           type: "text",
@@ -251,13 +261,25 @@ const CreateStudent = () => {
             required: "Academic Department is required",
           },
         },
+        {
+          label: "Password",
+          type: "password",
+          placeholder: "Enter Password",
+          name: "password",
+          rules: {
+            required: "Password is required",
+          },
+        },
       ],
     },
   ];
 
   return (
     <div>
-      <UserInformatonForm inputFields={studentFormFields} />
+      <UserInformatonForm
+        inputFields={studentFormFields}
+        onSubmitApi={createStudent}
+      />
     </div>
   );
 };
