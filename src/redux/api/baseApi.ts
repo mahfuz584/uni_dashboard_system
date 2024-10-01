@@ -67,7 +67,7 @@ const customBaseQueryWithRefreshToken: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: customBaseQueryWithRefreshToken,
-  // refetchOnMountOrArgChange : true,
+  refetchOnMountOrArgChange: true,
   keepUnusedDataFor: 10 * 24 * 60 * 60,
   tagTypes: ["List"],
   //baseQuery noraml look
