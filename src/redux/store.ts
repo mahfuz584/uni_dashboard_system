@@ -30,8 +30,8 @@ export const store = configureStore({
     [baseApi.reducerPath]: baseApi.reducer,
     // Add the authSlice reducer to the store
     auth: persistedAuthReducer,
-    offcanvas : offcanvasSlice,
-    modal : modalSlice
+    offcanvas: offcanvasSlice,
+    modal: modalSlice,
   },
   // Add the baseApi middleware to the store for handling API requests
   middleware: (getDefaultMiddleware) =>

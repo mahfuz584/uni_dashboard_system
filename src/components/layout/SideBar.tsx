@@ -1,4 +1,4 @@
-import { sideNavIiemsGenerator } from "@utils/sideNavItemsGenerator";
+import { sideNavitemsGenerator } from "@utils/sideNavItemsGenerator";
 import { Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
@@ -29,13 +29,13 @@ const SideBar = ({ collapsed, setCollapsed }: TSideBarProps) => {
   let sidebarItems;
   switch (user) {
     case userRole.ADMIN:
-      sidebarItems = sideNavIiemsGenerator(adminPaths, userRole.ADMIN);
+      sidebarItems = sideNavitemsGenerator(adminPaths, userRole.ADMIN);
       break;
     case userRole.FACULTY:
-      sidebarItems = sideNavIiemsGenerator(facultyPaths, userRole.FACULTY);
+      sidebarItems = sideNavitemsGenerator(facultyPaths, userRole.FACULTY);
       break;
     case userRole.STUDENT:
-      sidebarItems = sideNavIiemsGenerator(studentPaths, userRole.STUDENT);
+      sidebarItems = sideNavitemsGenerator(studentPaths, userRole.STUDENT);
       break;
     default:
       break;

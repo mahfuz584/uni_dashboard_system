@@ -5,11 +5,12 @@ import TitleAndBtn from "@components/ui/dynamic/TitleAndBtn";
 import { TableProps, Tag } from "antd";
 import { useState } from "react";
 import { IoIosEye } from "react-icons/io";
-import {
-  useCreateSemesterMutation,
-  useGetSemesterListQuery,
-  useGetSingleSemesterQuery,
-} from "redux/features/academicManagement/academicSemesterApi";
+import { useListApiQuery, useRetrieveApiQuery } from "redux/api/genericApi";
+// import {
+//   useCreateSemesterMutation,
+//   useGetSemesterListQuery,
+//   useGetSingleSemesterQuery,
+// } from "redux/features/academicManagement/academicSemesterApi";
 
 import { openModal } from "redux/features/modal/modalSlice";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
@@ -25,12 +26,18 @@ const AcademicSemester = () => {
 
   const { open: modalOpen } = useAppSelector((state) => state.modal);
 
-  const [createAcademicSemester] = useCreateSemesterMutation();
-  const { data: { semseterList = [] } = {}, isLoading } =
-    useGetSemesterListQuery(params);
+  const { data: { data: semseterList = [] } = {}, isLoading } = useListApiQuery(
+    {
+      url: "/academic-semesters",
+      // params: params,
+    }
+  );
 
-  const { data: { data: retriveData = {} } = {} } = useGetSingleSemesterQuery(
-    modalOpen,
+  const { data: { data: retriveData = {} } = {} } = useRetrieveApiQuery(
+    {
+      url: "/academic-semesters",
+      id: modalOpen,
+    },
     {
       skip: !modalOpen,
     }
@@ -343,7 +350,7 @@ const AcademicSemester = () => {
 
   const offcanvasProps = {
     formFields: formFields,
-    onSubmitApi: createAcademicSemester,
+    postApi: "/academic-semesters/create-academic-semester",
     onSemsterChange: handleSemesterChange,
   };
 

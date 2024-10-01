@@ -14,7 +14,7 @@ type TformFields = {
 };
 export type TOfcanvasProps = {
   formFields: TformFields[];
-  onSubmitApi: (data: any) => void;
+  postApi: string;
   onSemsterChange?: (
     value: string,
     setValue: (name: string, value: any) => void

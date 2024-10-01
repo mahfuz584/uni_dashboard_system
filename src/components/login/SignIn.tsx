@@ -2,7 +2,7 @@ import { verifyToken } from "@utils/verifyToken";
 import { Button, Col, Form, Input, Row } from "antd";
 import { Controller, FieldValues, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "redux/features/auth/authApi";
+import { usePostAPiMutation } from "redux/api/genericApi";
 import { setUser, TUser } from "redux/features/auth/authSlice";
 import { useAppDispatch } from "redux/hooks";
 import { toast } from "sonner";
@@ -12,7 +12,7 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   const { control, handleSubmit } = useForm();
-  const [login] = useLoginMutation();
+  const [login] = usePostAPiMutation();
 
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Logging in...");
@@ -21,7 +21,10 @@ const SignIn = () => {
       password: data.password,
     };
     try {
-      const res = await login(userInfo).unwrap();
+      const res = await login({
+        url: "/auth/login",
+        body: userInfo,
+      }).unwrap();
       const { accessToken } = res?.data;
       const user = verifyToken(accessToken) as TUser;
       dispatch(setUser({ user: user, token: accessToken }));
