@@ -275,12 +275,12 @@ const CreateStudent = () => {
   ];
 
   return (
-    <div>
+    <>
       <UserInformatonForm
         inputFields={studentFormFields}
-        onSubmitApi={createStudent}
+        postApi={"/students/create-student"}
       />
-    </div>
+    </>
   );
 };
 

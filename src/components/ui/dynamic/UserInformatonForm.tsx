@@ -5,27 +5,23 @@ import {
   Divider,
   Form,
   Input,
+  Modal,
   Row,
   Select,
   Upload,
+  UploadFile,
 } from "antd";
 import { useState } from "react";
-import {
-  Controller,
-  FieldValues,
-  SubmitHandler,
-  useForm,
-} from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css"; // Ensure styles are imported
-import { closeOffcanvas } from "redux/features/offcanvas/offcanvasSlice";
+import { usePostAPiMutation } from "redux/api/genericApi";
 import { useAppDispatch } from "redux/hooks";
-import { toast } from "sonner";
 import CommonButton from "../common/CommonButton";
 
 type TUserInformatonForm = {
   inputFields: any[];
-  onSubmitApi: any;
+  postApi: string;
 };
 
 const uploadButton = (
@@ -37,39 +33,64 @@ const uploadButton = (
 
 const UserInformatonForm: React.FC<TUserInformatonForm> = ({
   inputFields,
-  onSubmitApi,
+  postApi,
 }) => {
-  const [fileList, setFileList] = useState<any[]>([]);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
   const dispatch = useAppDispatch();
-  const { control, handleSubmit, reset } = useForm();
+  const { control, handleSubmit, reset, setValue } = useForm();
+  const [onSubmitApi] = usePostAPiMutation();
 
-  const handleChange = ({ fileList: newFileList }: any) => {
-    setFileList(newFileList);
+  const handleChange = ({ fileList }: { fileList: UploadFile[] }) => {
+    console.log(fileList, "fileList");
+    fileList.forEach((file) => {
+      if (!file.url && !file.preview) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj as Blob);
+        reader.onload = () => {
+          file.preview = reader.result as string; // Set the preview URL
+          setFileList([...fileList]);
+        };
+      }
+    });
+    setFileList(fileList);
+    setValue("image", fileList); // Register the uploaded file
   };
 
-  const beforeUpload = (_file: any) => {
-    return false;
+  const handlePreview = async (file: UploadFile) => {
+    setPreviewImage(file.url || (file.preview as string));
+    setPreviewOpen(true);
   };
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const toastId = toast.loading("Submitting Form ....");
-    const formData = new FormData();
-    console.log(
-      "🚀 ~ constonSubmit:SubmitHandler<FieldValues>= ~ formData:",
-      formData
-    );
-    formData.append("data", JSON.stringify(data));
-    const response = await onSubmitApi(formData);
-    if (response?.data?.success) {
-      toast.success(response.data.message, { id: toastId });
-      dispatch(closeOffcanvas());
-      reset();
-    } else {
-      toast.error(response?.error?.data?.errorSources?.[0]?.message, {
-        id: toastId,
-      });
-    }
+  const handleCancel = () => setPreviewOpen(false);
+
+  const onSubmit = (data: any) => {
+    console.log(data); // Access uploaded file(s) here
   };
+  // const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  //   // const toastId = toast.loading("Submitting Form ....");
+  //   // const formData = new FormData();
+  //   // console.log(
+  //   //   "🚀 ~ constonSubmit:SubmitHandler<FieldValues>= ~ formData:",
+  //   //   formData
+  //   // );
+  //   // formData.append("data", JSON.stringify(data));
+  //   // const response = await onSubmitApi({
+  //   //   url: postApi,
+  //   //   body: formData,
+  //   // });
+  //   // if (response?.data?.success) {
+  //   //   toast.success(response.data.message, { id: toastId });
+  //   //   dispatch(closeOffcanvas());
+  //   //   reset();
+  //   // } else {
+  //   //   toast.error(response?.error?.data?.errorSources?.[0]?.message, {
+  //   //     id: toastId,
+  //   //   });
+  //   // }
+  //   console.log("data", data);
+  // };
 
   return (
     <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
@@ -125,7 +146,7 @@ const UserInformatonForm: React.FC<TUserInformatonForm> = ({
                           />
                         ) : type === "date_" ? (
                           <DatePicker className="w-full" {...field} />
-                        ) : type === "tel_" ? (
+                        ) : type === "tel" ? (
                           <PhoneInput
                             {...field}
                             country={"bd"}
@@ -148,14 +169,29 @@ const UserInformatonForm: React.FC<TUserInformatonForm> = ({
                             containerClass="ant-input"
                           />
                         ) : type === "img_file" ? (
-                          <Upload
-                            listType="picture-card"
-                            fileList={fileList}
-                            onChange={handleChange}
-                            beforeUpload={beforeUpload} // Prevent automatic upload
-                          >
-                            {fileList.length >= 1 ? null : uploadButton}
-                          </Upload>
+                          <>
+                            <Upload
+                              {...field}
+                              listType="picture-card"
+                              fileList={fileList}
+                              onChange={handleChange}
+                              onPreview={handlePreview}
+                              beforeUpload={() => false} // Prevent default upload
+                            >
+                              {fileList.length >= 1 ? null : <PlusOutlined />}
+                            </Upload>
+                            <Modal
+                              open={previewOpen}
+                              footer={null}
+                              onCancel={handleCancel}
+                            >
+                              <img
+                                alt="Preview"
+                                style={{ width: "100%" }}
+                                src={previewImage}
+                              />
+                            </Modal>
+                          </>
                         ) : (
                           <Input {...field} placeholder={placeholder} />
                         )}
