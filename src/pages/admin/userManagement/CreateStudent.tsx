@@ -19,36 +19,28 @@ const CreateStudent = () => {
           name: "image",
           type: "img_file",
           label: "Profile Picture",
-          rules: {
-            required: "Profile Picture is required",
-          },
+          required: true,
         },
         {
           label: "First Name",
           type: "text",
           placeholder: "Enter First Name",
-          name: "student.name.firstName",
-          rules: {
-            required: "First Name is required",
-          },
+          name: "data.student.name.firstName",
+          required: true,
         },
         {
           label: "Middle Name",
           type: "text",
           placeholder: "Enter Middle Name",
-          name: "student.name.middleName",
-          rules: {
-            required: "Middle Name is required",
-          },
+          name: "data.student.name.middleName",
+          required: true,
         },
         {
           label: "Last Name",
           type: "text",
           placeholder: "Enter Last Name",
-          name: "student.name.lastName",
-          rules: {
-            required: "Last Name is required",
-          },
+          name: "data.student.name.lastName",
+          required: true,
         },
         {
           label: "Gender",
@@ -58,46 +50,36 @@ const CreateStudent = () => {
             { label: "Female", value: "female" },
           ],
           placeholder: "Select Gender",
-          name: "student.gender",
-          rules: {
-            required: "Gender is required",
-          },
+          name: "data.student.gender",
+          required: true,
         },
         {
           label: "Date of Birth",
           type: "date",
           placeholder: "Enter Date of Birth",
-          name: "student.dateOfBirth",
-          rules: {
-            required: "Date of Birth is required",
-          },
+          name: "data.student.dateOfBirth",
+          required: true,
         },
         {
           label: "Email",
           type: "email",
           placeholder: "Enter Email",
-          name: "student.email",
-          rules: {
-            required: "Email is required",
-          },
+          name: "data.student.email",
+          required: true,
         },
         {
           label: "Contact Number",
           type: "tel",
           placeholder: "Enter Contact Number",
-          name: "student.contactNo",
-          rules: {
-            required: "Contact Number is required",
-          },
+          name: "data.student.contactNo",
+          required: true,
         },
         {
           label: "Emergency Contact Number",
           type: "tel",
           placeholder: "Enter Emergency Contact Number",
-          name: "student.emergencyContactNo",
-          rules: {
-            required: "Emergency Contact Number is required",
-          },
+          name: "data.student.emergencyContactNo",
+          required: true,
         },
         {
           label: "Blood Group",
@@ -107,28 +89,22 @@ const CreateStudent = () => {
             { label: "O+", value: "O+" },
           ],
           placeholder: "Select Blood Group",
-          name: "student.bloogGroup",
-          rules: {
-            required: "Blood Group is required",
-          },
+          name: "data.student.bloogGroup",
+          required: true,
         },
         {
           label: "Present Address",
           type: "text",
           placeholder: "Enter Present Address",
-          name: "student.presentAddress",
-          rules: {
-            required: "Present Address is required",
-          },
+          name: "data.student.presentAddress",
+          required: true,
         },
         {
           label: "Permanent Address",
           type: "text",
           placeholder: "Enter Permanent Address",
-          name: "student.permanentAddress",
-          rules: {
-            required: "Permanent Address is required",
-          },
+          name: "data.student.permanentAddress",
+          required: true,
         },
       ],
     },
@@ -139,55 +115,43 @@ const CreateStudent = () => {
           label: "Father's Name",
           type: "text",
           placeholder: "Enter Father's Name",
-          name: "student.guardian.fatherName",
-          rules: {
-            required: "Father's Name is required",
-          },
+          name: "data.student.guardian.fatherName",
+          required: true,
         },
         {
           label: "Father's Occupation",
           type: "text",
           placeholder: "Enter Father's Occupation",
-          name: "student.guardian.fatherOccupation",
-          rules: {
-            required: "Father's Occupation is required",
-          },
+          name: "data.student.guardian.fatherOccupation",
+          required: true,
         },
         {
           label: "Father's Contact Number",
           type: "tel",
           placeholder: "Enter Father's Contact Number",
-          name: "student.guardian.fatherContactNo",
-          rules: {
-            required: "Father's Contact Number is required",
-          },
+          name: "data.student.guardian.fatherContactNo",
+          required: true,
         },
         {
           label: "Mother's Name",
           type: "text",
           placeholder: "Enter Mother's Name",
-          name: "student.guardian.motherName",
-          rules: {
-            required: "Mother's Name is required",
-          },
+          name: "data.student.guardian.motherName",
+          required: true,
         },
         {
           label: "Mother's Occupation",
           type: "text",
           placeholder: "Enter Mother's Occupation",
-          name: "student.guardian.motherOccupation",
-          rules: {
-            required: "Mother's Occupation is required",
-          },
+          name: "data.student.guardian.motherOccupation",
+          required: true,
         },
         {
           label: "Mother's Contact Number",
           type: "tel",
           placeholder: "Enter Mother's Contact Number",
-          name: "student.guardian.motherContactNo",
-          rules: {
-            required: "Mother's Contact Number is required",
-          },
+          name: "data.student.guardian.motherContactNo",
+          required: true,
         },
       ],
     },
@@ -198,37 +162,29 @@ const CreateStudent = () => {
           label: "Local Guardian's Name",
           type: "text",
           placeholder: "Enter Local Guardian's Name",
-          name: "student.localGuardian.name",
-          rules: {
-            required: "Local Guardian's Name is required",
-          },
+          name: "data.student.localGuardian.name",
+          required: true,
         },
         {
           label: "Local Guardian's Occupation",
           type: "text",
           placeholder: "Enter Local Guardian's Occupation",
-          name: "student.localGuardian.occupation",
-          rules: {
-            required: "Local Guardian's Occupation is required",
-          },
+          name: "data.student.localGuardian.occupation",
+          required: true,
         },
         {
           label: "Local Guardian's Contact Number",
           type: "tel",
           placeholder: "Enter Local Guardian's Contact Number",
-          name: "student.localGuardian.contactNo",
-          rules: {
-            required: "Local Guardian's Contact Number is required",
-          },
+          name: "data.student.localGuardian.contactNo",
+          required: true,
         },
         {
           label: "Local Guardian's Address",
           type: "text",
           placeholder: "Enter Local Guardian's Address",
-          name: "student.localGuardian.address",
-          rules: {
-            required: "Local Guardian's Address is required",
-          },
+          name: "data.student.localGuardian.address",
+          required: true,
         },
       ],
     },
@@ -243,10 +199,8 @@ const CreateStudent = () => {
             value: semester._id,
           })),
           placeholder: "Select Admission Semester",
-          name: "student.admissionSemester",
-          rules: {
-            required: "Admission Semester is required",
-          },
+          name: "data.student.admissionSemester",
+          required: true,
         },
         {
           label: "Academic Department",
@@ -256,19 +210,15 @@ const CreateStudent = () => {
             value: depet._id,
           })),
           placeholder: "Enter Academic Department",
-          name: "student.academicDepartment",
-          rules: {
-            required: "Academic Department is required",
-          },
+          name: "data.student.academicDepartment",
+          required: true,
         },
         {
           label: "Password",
           type: "password",
           placeholder: "Enter Password",
-          name: "password",
-          rules: {
-            required: "Password is required",
-          },
+          name: "data.password",
+          required: true,
         },
       ],
     },
@@ -278,7 +228,7 @@ const CreateStudent = () => {
     <>
       <UserInformatonForm
         inputFields={studentFormFields}
-        postApi={"/students/create-student"}
+        postApi={"/users/create-student/"}
       />
     </>
   );

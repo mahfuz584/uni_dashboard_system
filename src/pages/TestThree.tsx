@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Controller, FieldValues, useForm } from "react-hook-form";
 
 const TestThree = () => {
-  const { control, handleSubmit, setValue } = useForm();
+  const { control, handleSubmit, setValue, trigger } = useForm();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | undefined>(
     undefined
@@ -36,50 +36,51 @@ const TestThree = () => {
   };
 
   // handle file list change
-  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
+  const handleChange: UploadProps["onChange"] = async ({
+    fileList: newFileList,
+  }) => {
     setFileList(newFileList);
     if (newFileList.length > 0) {
       const file = newFileList[0]?.originFileObj as File;
-      setValue("file", file);
+      setValue("file", file); // Set the file to react-hook-form state
+    } else {
+      // If the file list is empty, remove the file from react-hook-form state
+      setValue("file", null); // Clear the value in the form
     }
+    await trigger("file"); // Manually trigger validation for the file input
   };
 
   // handle form submission
-  const onSubmit = (data: FieldValues) => {
-    const formData = new FormData();
-    if (data.file) {
-      formData.append("file", data?.file);
-    }
-    const payload = {
-      file: formData.get("file"),
-    };
-    console.log(payload);
+  const onSubmit = async (data: FieldValues) => {
+    console.log("🚀 ~ fileData", data);
   };
-
-  // upload button content
-  const uploadButton = (
-    <button style={{ border: 0, background: "none" }} type="button">
-      <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </button>
-  );
 
   return (
     <Form onFinish={handleSubmit(onSubmit)}>
       <Controller
-        control={control}
         name="file"
-        render={({ field }) => (
-          <>
+        control={control}
+        rules={{ required: "Profile picture is required" }} // Validation rule
+        render={({ field, fieldState }) => (
+          <Form.Item
+            label="Profile Picture"
+            required
+            validateStatus={fieldState.error ? "error" : ""}
+            help={fieldState.error?.message} // Show validation message
+          >
             <Upload
-              {...field}
               listType="picture-card"
               fileList={fileList}
               onPreview={handlePreview}
               onChange={handleChange}
-              beforeUpload={() => false}
+              beforeUpload={() => false} // Prevent auto-uploading
             >
-              {fileList.length >= 1 ? null : uploadButton}
+              {fileList.length >= 1 ? null : (
+                <button type="button">
+                  <PlusOutlined />
+                  <div>Upload</div>
+                </button>
+              )}
             </Upload>
             {previewImage && (
               <Image
@@ -95,9 +96,10 @@ const TestThree = () => {
                 src={previewImage}
               />
             )}
-          </>
+          </Form.Item>
         )}
       />
+
       <Form.Item>
         <Button type="primary" htmlType="submit">
           Submit

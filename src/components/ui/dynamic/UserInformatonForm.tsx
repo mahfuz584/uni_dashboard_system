@@ -4,19 +4,28 @@ import {
   DatePicker,
   Divider,
   Form,
+  Image,
   Input,
-  Modal,
   Row,
   Select,
   Upload,
   UploadFile,
+  UploadProps,
 } from "antd";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import {
+  Controller,
+  FieldValues,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css"; // Ensure styles are imported
 import { usePostAPiMutation } from "redux/api/genericApi";
+import { closeOffcanvas } from "redux/features/offcanvas/offcanvasSlice";
 import { useAppDispatch } from "redux/hooks";
+import { toast } from "sonner";
+import { ApiResponse } from "types/offcanvasTypes";
 import CommonButton from "../common/CommonButton";
 
 type TUserInformatonForm = {
@@ -24,73 +33,85 @@ type TUserInformatonForm = {
   postApi: string;
 };
 
-const uploadButton = (
-  <div>
-    <PlusOutlined />
-    <div style={{ marginTop: 8 }}>Upload</div>
-  </div>
-);
-
 const UserInformatonForm: React.FC<TUserInformatonForm> = ({
   inputFields,
   postApi,
 }) => {
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
+  const [previewImage, setPreviewImage] = useState<string | undefined>(
+    undefined
+  );
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const { control, handleSubmit, setValue, trigger, reset } = useForm();
   const dispatch = useAppDispatch();
-  const { control, handleSubmit, reset, setValue } = useForm();
   const [onSubmitApi] = usePostAPiMutation();
 
-  const handleChange = ({ fileList }: { fileList: UploadFile[] }) => {
-    console.log(fileList, "fileList");
-    fileList.forEach((file) => {
-      if (!file.url && !file.preview) {
-        const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj as Blob);
-        reader.onload = () => {
-          file.preview = reader.result as string; // Set the preview URL
-          setFileList([...fileList]);
-        };
-      }
-    });
-    setFileList(fileList);
-    setValue("image", fileList); // Register the uploaded file
+  // blob image format
+  const getBlobImg = (file: File) => {
+    const blobUrl = URL.createObjectURL(file);
+    return blobUrl;
   };
 
+  // handle image preview
   const handlePreview = async (file: UploadFile) => {
-    setPreviewImage(file.url || (file.preview as string));
+    if (!file.url && !file.preview) {
+      file.preview = getBlobImg(file.originFileObj as File);
+    }
+    setPreviewImage(file?.url || file.preview);
     setPreviewOpen(true);
   };
 
-  const handleCancel = () => setPreviewOpen(false);
-
-  const onSubmit = (data: any) => {
-    console.log(data); // Access uploaded file(s) here
+  // cleanup Blob URL
+  const handleCancelPreview = () => {
+    if (previewImage) {
+      URL.revokeObjectURL(previewImage);
+    }
+    setPreviewImage(undefined);
+    setPreviewOpen(false);
   };
-  // const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-  //   // const toastId = toast.loading("Submitting Form ....");
-  //   // const formData = new FormData();
-  //   // console.log(
-  //   //   "🚀 ~ constonSubmit:SubmitHandler<FieldValues>= ~ formData:",
-  //   //   formData
-  //   // );
-  //   // formData.append("data", JSON.stringify(data));
-  //   // const response = await onSubmitApi({
-  //   //   url: postApi,
-  //   //   body: formData,
-  //   // });
-  //   // if (response?.data?.success) {
-  //   //   toast.success(response.data.message, { id: toastId });
-  //   //   dispatch(closeOffcanvas());
-  //   //   reset();
-  //   // } else {
-  //   //   toast.error(response?.error?.data?.errorSources?.[0]?.message, {
-  //   //     id: toastId,
-  //   //   });
-  //   // }
-  //   console.log("data", data);
-  // };
+
+  // handle file list change
+  const handleChange: UploadProps["onChange"] = async ({
+    fileList: newFileList,
+  }) => {
+    setFileList(newFileList);
+    if (newFileList.length > 0) {
+      const file = newFileList[0]?.originFileObj as File;
+      setValue("image", file);
+    } else {
+      setValue("image", null);
+    }
+    await trigger("image");
+  };
+  const onSubmit: SubmitHandler<FieldValues> = async (submittedData) => {
+    const toastId = toast.loading("Submitting Form ....");
+    const formData = new FormData();
+    Object.keys(submittedData).forEach((key) => {
+      if (key === "image") {
+        formData.append("file", submittedData[key]);
+      } else {
+        formData.append(key, JSON.stringify(submittedData[key]));
+      }
+    });
+    try {
+      const response = (await onSubmitApi({
+        url: postApi,
+        body: formData,
+      })) as unknown as ApiResponse;
+      if (response?.data?.success) {
+        toast.success(response.data.message, { id: toastId });
+        dispatch(closeOffcanvas());
+        reset();
+      } else {
+        toast.error(response?.error?.data?.errorSources?.[0]?.message, {
+          id: toastId,
+        });
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
+  };
 
   return (
     <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
@@ -110,16 +131,19 @@ const UserInformatonForm: React.FC<TUserInformatonForm> = ({
           <Row gutter={18}>
             {fields?.map(
               (
-                { label, type, placeholder, name, rules, options }: any,
+                { label, type, placeholder, name, required, options }: any,
                 idx: number
               ) => (
                 <Col xs={8} key={idx}>
                   <Controller
                     name={name}
                     control={control}
-                    rules={rules}
+                    rules={{
+                      required: required ? `${label} is required` : false,
+                    }}
                     render={({ field, fieldState }) => (
                       <Form.Item
+                        required
                         label={label}
                         validateStatus={fieldState?.error ? "error" : ""}
                         help={fieldState?.error?.message}
@@ -132,7 +156,7 @@ const UserInformatonForm: React.FC<TUserInformatonForm> = ({
                             {...field}
                             placeholder={placeholder}
                           />
-                        ) : type === "select_" ? (
+                        ) : type === "select" ? (
                           <Select
                             {...field}
                             showSearch
@@ -144,7 +168,7 @@ const UserInformatonForm: React.FC<TUserInformatonForm> = ({
                             }
                             options={options}
                           />
-                        ) : type === "date_" ? (
+                        ) : type === "date" ? (
                           <DatePicker className="w-full" {...field} />
                         ) : type === "tel" ? (
                           <PhoneInput
@@ -171,26 +195,33 @@ const UserInformatonForm: React.FC<TUserInformatonForm> = ({
                         ) : type === "img_file" ? (
                           <>
                             <Upload
-                              {...field}
                               listType="picture-card"
                               fileList={fileList}
-                              onChange={handleChange}
                               onPreview={handlePreview}
-                              beforeUpload={() => false} // Prevent default upload
+                              onChange={handleChange}
+                              beforeUpload={() => false} // Prevent auto-uploading
                             >
-                              {fileList.length >= 1 ? null : <PlusOutlined />}
+                              {fileList.length >= 1 ? null : (
+                                <button type="button">
+                                  <PlusOutlined />
+                                  <div>Upload</div>
+                                </button>
+                              )}
                             </Upload>
-                            <Modal
-                              open={previewOpen}
-                              footer={null}
-                              onCancel={handleCancel}
-                            >
-                              <img
-                                alt="Preview"
-                                style={{ width: "100%" }}
+                            {previewImage && (
+                              <Image
+                                wrapperStyle={{ display: "none" }}
+                                preview={{
+                                  visible: previewOpen,
+                                  onVisibleChange: (visible) => {
+                                    if (!visible) {
+                                      handleCancelPreview();
+                                    }
+                                  },
+                                }}
                                 src={previewImage}
                               />
-                            </Modal>
+                            )}
                           </>
                         ) : (
                           <Input {...field} placeholder={placeholder} />
