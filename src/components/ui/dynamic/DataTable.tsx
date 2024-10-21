@@ -1,9 +1,13 @@
-import { Table } from "antd";
+import { Pagination, Table } from "antd";
 import { ColumnType } from "antd/es/table";
 import React from "react";
 import Loader from "../common/Loader";
 
 type TDataProps = {
+  limit?: number;
+  total?: number;
+  page?: number;
+  setPage?: React.Dispatch<React.SetStateAction<number>>;
   columns: ColumnType<any>[];
   datasource: object[];
   loading: boolean;
@@ -11,10 +15,14 @@ type TDataProps = {
 };
 
 const DataTable: React.FC<TDataProps> = ({
+  limit,
+  total,
   columns,
   datasource,
   loading,
   setParams,
+  page,
+  setPage,
 }) => {
   // for unique key error
   const dataSourceKey = datasource?.map((item, indx) => {
@@ -48,34 +56,33 @@ const DataTable: React.FC<TDataProps> = ({
     }
   };
 
-  // filter params
-  // const onChange = (
-  //   pagination,
-  //   filters: Record<string, string[]>,
-  //   sorter,
-  //   extra: any
-  //   console.log("extra:", extra); // Verify extra parameter
+  const onChangePage = (newPage: number) => {
+    const queryParams = [] as any[];
 
-  //   if (extra?.action === "filter") {
-  //     const queryParams: { name: string; value: string }[] = [];
+    // Push the pagination params into the params array
+    queryParams.push({
+      name: "page",
+      value: newPage.toString(),
+    });
+    queryParams.push({
+      name: "limit",
+      value: limit,
+    });
 
-  //     Object.keys(filters).forEach((key) => {
-  //       const filterValues = filters[key];
-  //       filterValues.forEach((value) => {
-  //         queryParams.push({
-  //           name: key,
-  //           value: value,
-  //         });
-  //       });
-  //     });
+    if (setParams) {
+      setParams((prevParams) => {
+        const filteredParams = prevParams.filter(
+          (param) => param.name !== "page" && param.name !== "limit"
+        );
+        return [...filteredParams, ...queryParams];
+      });
+    }
 
-  //     console.log("queryParams:", queryParams); // Verify queryParams
-
-  //     if (setParams) {
-  //       setParams(queryParams);
-  //     }
-  //   }
-  // };
+    // Update the page state
+    if (setPage) {
+      setPage(newPage);
+    }
+  };
 
   if (loading)
     return (
@@ -86,8 +93,18 @@ const DataTable: React.FC<TDataProps> = ({
 
   return (
     <>
-      <Table dataSource={dataSourceKey} columns={columns} onChange={onChange} />
-      {/* <Table dataSource={dataSourceKey} columns={modifiedColumns} bordered /> */}
+      <Table
+        dataSource={dataSourceKey}
+        columns={columns}
+        onChange={onChange}
+        pagination={false}
+      />
+      <Pagination
+        align="end"
+        current={page}
+        onChange={onChangePage}
+        total={total}
+      />
     </>
   );
 };

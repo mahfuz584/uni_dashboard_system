@@ -4,10 +4,10 @@ import AcademicFaculty from "@pages/admin/academicManagemnt/AcademicFaculty";
 import AcademicSemester from "@pages/admin/academicManagemnt/AcademicSemester";
 
 import AdminDashboard from "@pages/admin/AdminDashboard";
+import AllStudents from "@pages/admin/userManagement/AllStudents";
 import CreateAdmin from "@pages/admin/userManagement/CreateAdmin";
 import CreateFaculty from "@pages/admin/userManagement/CreateFaculty";
 import CreateStudent from "@pages/admin/userManagement/CreateStudent";
-import TestThree from "@pages/TestThree";
 import { FaChalkboardTeacher, FaElementor } from "react-icons/fa";
 import { GrUserAdmin } from "react-icons/gr";
 import { LuLayoutDashboard } from "react-icons/lu";
@@ -80,6 +80,12 @@ export const adminPaths = [
         path: "create-student",
         element: <CreateStudent />,
       },
+      {
+        name: "All Student",
+        icon: <PiStudentBold />,
+        path: "get-all-students",
+        element: <AllStudents />,
+      },
     ],
   },
   // {
@@ -94,12 +100,12 @@ export const adminPaths = [
   //   path: "test-2",
   //   element: <TestTwo />,
   // },
-  {
-    name: "Test-3",
-    icon: <PiStudentBold />,
-    path: "test-3",
-    element: <TestThree />,
-  },
+  // {
+  //   name: "Test-3",
+  //   icon: <PiStudentBold />,
+  //   path: "test-3",
+  //   element: <TestThree />,
+  // },
 ];
 
 //admin routes

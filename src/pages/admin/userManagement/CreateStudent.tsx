@@ -19,7 +19,7 @@ const CreateStudent = () => {
           name: "image",
           type: "img_file",
           label: "Profile Picture",
-          required: true,
+          required: false,
         },
         {
           label: "First Name",

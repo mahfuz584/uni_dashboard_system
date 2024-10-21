@@ -22,16 +22,16 @@ type TQueryParams = {
 
 const AcademicSemester = () => {
   const [params, setParams] = useState<TQueryParams[]>([]);
+  const [page, setPage] = useState<number>(1);
   const dispatch = useAppDispatch();
 
   const { open: modalOpen } = useAppSelector((state) => state.modal);
 
-  const { data: { data: semseterList = [] } = {}, isLoading } = useListApiQuery(
-    {
+  const { data: { data: semseterList = [], meta = {} } = {}, isLoading } =
+    useListApiQuery({
       url: "/academic-semesters",
-      // params: params,
-    }
-  );
+      params: params,
+    });
 
   const { data: { data: retriveData = {} } = {} } = useRetrieveApiQuery(
     {
@@ -71,8 +71,8 @@ const AcademicSemester = () => {
             row?.name === "Fall"
               ? "purple"
               : row?.name === "Summer"
-              ? "cyan"
-              : "processing"
+                ? "cyan"
+                : "processing"
           }
         >
           {row?.name}
@@ -89,8 +89,8 @@ const AcademicSemester = () => {
             row?.name === "Fall"
               ? "purple"
               : row?.name === "Summer"
-              ? "cyan"
-              : "processing"
+                ? "cyan"
+                : "processing"
           }
         >
           {row?.code}
@@ -107,8 +107,8 @@ const AcademicSemester = () => {
             row?.name === "Fall"
               ? "purple"
               : row?.name === "Summer"
-              ? "cyan"
-              : "processing"
+                ? "cyan"
+                : "processing"
           }
         >
           {row?.startMonth}
@@ -125,8 +125,8 @@ const AcademicSemester = () => {
             row?.name === "Fall"
               ? "purple"
               : row?.name === "Summer"
-              ? "cyan"
-              : "processing"
+                ? "cyan"
+                : "processing"
           }
         >
           {row?.endMonth}
@@ -149,8 +149,8 @@ const AcademicSemester = () => {
             row?.name === "Fall"
               ? "purple"
               : row?.name === "Summer"
-              ? "cyan"
-              : "processing"
+                ? "cyan"
+                : "processing"
           }
         >
           {row?.year}
@@ -243,8 +243,8 @@ const AcademicSemester = () => {
             row?.name === "Fall"
               ? "purple"
               : row?.name === "Summer"
-              ? "cyan"
-              : "processing"
+                ? "cyan"
+                : "processing"
           }
         >
           {row?.name}
@@ -261,8 +261,8 @@ const AcademicSemester = () => {
             row?.name === "Fall"
               ? "purple"
               : row?.name === "Summer"
-              ? "cyan"
-              : "processing"
+                ? "cyan"
+                : "processing"
           }
         >
           {row?.code}
@@ -280,8 +280,8 @@ const AcademicSemester = () => {
             row?.name === "Fall"
               ? "purple"
               : row?.name === "Summer"
-              ? "cyan"
-              : "processing"
+                ? "cyan"
+                : "processing"
           }
         >
           {row?.startMonth}
@@ -299,8 +299,8 @@ const AcademicSemester = () => {
             row?.name === "Fall"
               ? "purple"
               : row?.name === "Summer"
-              ? "cyan"
-              : "processing"
+                ? "cyan"
+                : "processing"
           }
         >
           {row?.endMonth}
@@ -318,8 +318,8 @@ const AcademicSemester = () => {
             row?.name === "Fall"
               ? "purple"
               : row?.name === "Summer"
-              ? "cyan"
-              : "processing"
+                ? "cyan"
+                : "processing"
           }
         >
           {row?.year}
@@ -342,6 +342,10 @@ const AcademicSemester = () => {
   };
 
   const dataTableProps = {
+    total: meta?.total,
+    limit: meta?.limit,
+    page: page,
+    setPage: setPage,
     columns: columns,
     datasource: semseterList,
     loading: isLoading,
