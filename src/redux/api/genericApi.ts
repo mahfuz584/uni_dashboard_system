@@ -4,9 +4,23 @@ const genericApi = () => {
   return baseApi.injectEndpoints({
     endpoints: (builder) => ({
       listApi: builder.query({
-        query: ({ url }) => {
+        query: ({ url, params }) => {
+          const queryParams = new URLSearchParams();
+
+          if (params) {
+            params.forEach(
+              ({ name, value }: { name: string; value: string }) => {
+                queryParams.append(name, value);
+              }
+            );
+          }
+
+          const fullUrl = queryParams.toString()
+            ? `${url}?${queryParams}`
+            : url;
+
           return {
-            url: url,
+            url: fullUrl,
             method: "GET",
           };
         },
